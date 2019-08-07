@@ -37,8 +37,14 @@ public class Server1
         while(true)
         {
             String s = in.readLine();
+            if(s==null||"".equals(s))
+            {
+                break;
+            }
             log.info(s);
         }
+        socket.close();
+        in.close();
     }
 
     public static void main(String[] args) throws IOException

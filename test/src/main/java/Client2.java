@@ -1,14 +1,11 @@
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class Client1
+public class Client2
 {
     private static int DEFAULT_SERVER_PORT = 7777;
 
