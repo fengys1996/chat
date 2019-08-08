@@ -1,17 +1,18 @@
+package client;
+
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Timer;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class SreceHandler implements Runnable
+public class SsendHandler implements Runnable
 {
     Socket socket;
-    public SreceHandler(Socket socket)
+    public SsendHandler(Socket socket)
     {
         System.out.println(socket);
         this.socket = socket;
@@ -19,23 +20,24 @@ public class SreceHandler implements Runnable
 
     public void run()
     {
-        BufferedReader in = null;
+        PrintWriter out = null;
         try
         {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while(true)
+            out = new PrintWriter(socket.getOutputStream(),true);
+            Scanner scanner = new Scanner(System.in);
+            while (true)
             {
                 if (!socket.isClosed())
                 {
-                    String s = in.readLine();
-                    log.info(s);
-                    if ("bye".equals(s))
+                    String s = scanner.nextLine();
+                    out.println(s);
+                    if (s.equals("bye"))
                     {
-                        break;
+                        TimeUnit.SECONDS.sleep(1);
                     }
                 }
-                else
-                {
+                else {
+                    log.info("c socket is closed!");
                     break;
                 }
 
@@ -66,16 +68,9 @@ public class SreceHandler implements Runnable
                     e.printStackTrace();
                 }
             }
-            if (in != null)
+            if (out != null)
             {
-                try
-                {
-                    in.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                out.close();
             }
         }
     }
